@@ -1,3 +1,4 @@
+```
 OficinaDeCarro/
 ├── .mvn/                            # Configurações do Maven Wrapper
 │   ├── wrapper/
@@ -49,3 +50,4 @@ OficinaDeCarro/
 ├── mvnw                                        # Script para rodar o Maven Wrapper
 ├── mvnw.cmd                                    # Script para rodar o Maven Wrapper no Windows
 └── pom.xml                                     # Configurações do Maven, incluindo dependências
+```
