@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Veículo-Peça</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-5">Editar Veículo-Peça</h1>
+        <form action="/veiculoPeca/update" method="post">
+            <input type="hidden" name="llp_idrelatorio" th:value="${llp_veiculoPeca.llp_idrelatorio}">
+            <div class="form-group">
+                <label for="llp_quantidade">Quantidade:</label>
+                <input type="text" class="form-control" id="llp_quantidade" name="llp_quantidade" th:value="${llp_veiculoPeca.llp_quantidade}" required>
+            </div>
+            <div class="form-group">
+                <label for="llp_veiculo">ID do Veículo:</label>
+                <input type="text" class="form-control" id="llp_veiculo" name="llp_veiculo.idveiculo" th:value="${llp_veiculoPeca.llp_veiculo.idveiculo}" required>
+            </div>
+            <div class="form-group">
+                <label for="llp_peca">ID da Peça:</label>
+                <input type="text" class="form-control" id="llp_peca" name="llp_peca.idpeca" th:value="${llp_veiculoPeca.llp_peca.idpeca}" required>
+            </div>
+            <button type="submit" class="btn btn-success">Atualizar</button>
+        </form>
+    </div>
+</body>
+</html>

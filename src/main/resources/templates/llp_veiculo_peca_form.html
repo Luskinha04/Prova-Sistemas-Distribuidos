@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário Veículo-Peça</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 th:text="${llp_veiculoPeca.llp_idrelatorio != null ? 'Editar Veículo-Peça' : 'Criar Veículo-Peça'}"></h1>
+        <form th:action="@{/llp_veiculo_peca/save}" th:object="${llp_veiculoPeca}" method="post">
+            <div class="mb-3">
+                <label for="llp_idpeca" class="form-label">ID Peça</label>
+                <input type="number" id="llp_idpeca" class="form-control" th:field="*{llp_idpeca}" required>
+            </div>
+            <div class="mb-3">
+                <label for="llp_idveiculo" class="form-label">ID Veículo</label>
+                <input type="number" id="llp_idveiculo" class="form-control" th:field="*{llp_idveiculo}" required>
+            </div>
+            <div class="mb-3">
+                <label for="llp_quantidade" class="form-label">Quantidade</label>
+                <input type="text" id="llp_quantidade" class="form-control" th:field="*{llp_quantidade}" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Salvar</button>
+        </form>
+    </div>
+</body>
+</html>

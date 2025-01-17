@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário de Peça</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5">
+    <h1 th:text="${peca.llp_idpeca} != null ? 'Editar Peça' : 'Nova Peça'"></h1>
+    <form th:action="@{/pecas}" th:object="${peca}" method="post">
+        <div class="mb-3">
+            <label for="nome" class="form-label">Nome</label>
+            <input type="text" class="form-control" id="nome" name="llp_nome" th:value="${peca.llp_nome}" required>
+        </div>
+        <div class="mb-3">
+            <label for="descricao" class="form-label">Descrição</label>
+            <textarea class="form-control" id="descricao" name="llp_descricao" rows="3" th:text="${peca.llp_descricao}" required></textarea>
+        </div>
+        <div class="mb-3">
+            <label for="altura" class="form-label">Altura</label>
+            <input type="number" step="0.01" class="form-control" id="altura" name="llp_altura" th:value="${peca.llp_altura}" required>
+        </div>
+        <div class="mb-3">
+            <label for="largura" class="form-label">Largura</label>
+            <input type="number" step="0.01" class="form-control" id="largura" name="llp_largura" th:value="${peca.llp_largura}" required>
+        </div>
+        <div class="mb-3">
+            <label for="profundidade" class="form-label">Profundidade</label>
+            <input type="number" step="0.01" class="form-control" id="profundidade" name="llp_profundidade" th:value="${peca.llp_profundidade}" required>
+        </div>
+        <div class="mb-3">
+            <label for="materialFabricacao" class="form-label">Material de Fabricação</label>
+            <input type="text" class="form-control" id="materialFabricacao" name="llp_materialFabricacao" th:value="${peca.llp_materialFabricacao}" required>
+        </div>
+        <div class="mb-3">
+            <label for="localVeiculo" class="form-label">Local no Veículo</label>
+            <input type="text" class="form-control" id="localVeiculo" name="llp_localVeiculo" th:value="${peca.llp_localVeiculo}" required>
+        </div>
+        <button type="submit" class="btn btn-success">Salvar</button>
+        <a href="/pecas" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Peças</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5">
+
+    <h1>Lista de Peças</h1>
+    <a href="/"><img width="100px" src="https://png.pngtree.com/png-vector/20231114/ourmid/pngtree-back-icon-navigation-png-image_10540451.png"/></a>
+    
+    <a href="/pecas/novo" class="btn btn-primary mb-3">Nova Peça</a>
+    
+    <!-- Campo de pesquisa -->
+    <div class="mb-3">
+        <label for="searchInput" class="form-label">Pesquisar por Nome:</label>
+        <input type="text" id="searchInput" class="form-control" placeholder="Digite o nome da peça">
+    </div>
+
+    <table id="partsTable" class="table table-bordered mt-3">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Descrição</th>
+            <th>Material</th>
+            <th>Local no Veículo</th>
+            <th>Ações</th>
+        </tr>
+        </thead>
+        <tbody id="partsTableBody"> 
+            <!-- As peças serão carregadas aqui via JS -->
+        </tbody>
+    </table>
+</div>
+
+<!-- Script para a funcionalidade de pesquisa e atualização -->
+<script>
+    function updateTable() {
+        const searchInput = document.getElementById('searchInput').value;
+        
+        // Só realizar a requisição se o campo de pesquisa estiver vazio
+        if (searchInput.trim() === '') {
+            fetch('/pecas/rest') // Consumindo a API do Spring Boot
+                .then(response => response.json())
+                .then(data => {
+                    const tableBody = document.getElementById('partsTableBody');
+                    tableBody.innerHTML = ''; // Limpar a tabela antes de adicionar os novos dados
+
+                    data.forEach(peca => {
+                        const row = document.createElement('tr');
+                        
+                        row.innerHTML = `
+                            <td>${peca.llp_idpeca}</td>
+                            <td>${peca.llp_nome}</td>
+                            <td>${peca.llp_descricao}</td>
+                            <td>${peca.llp_materialFabricacao}</td>
+                            <td>${peca.llp_localVeiculo}</td>
+                            <td>
+                                <a href="/pecas/editar/${peca.llp_idpeca}" class="btn btn-warning btn-sm">Editar</a>
+                                <a href="/pecas/deletar/${peca.llp_idpeca}" class="btn btn-danger btn-sm">Deletar</a>
+                            </td>
+                        `;
+                        tableBody.appendChild(row);
+                    });
+                })
+                .catch(error => {
+                    console.error('Erro ao carregar os dados:', error);
+                });
+        }
+    }
+
+    // Atualiza a tabela a cada 1 segundo
+    setInterval(updateTable, 1000);
+
+    // Função para filtrar os resultados enquanto o usuário digita no campo de pesquisa
+    document.getElementById('searchInput').addEventListener('input', function () {
+        const filter = this.value.toLowerCase();
+        const rows = document.querySelectorAll('#partsTable tbody tr');
+        
+        rows.forEach(row => {
+            const nameCell = row.querySelector('td:nth-child(2)'); // Seleciona a segunda célula (Nome)
+            if (nameCell && nameCell.textContent.toLowerCase().includes(filter)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        });
+    });
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

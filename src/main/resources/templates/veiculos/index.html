@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Veículos</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script>
+        // Função para buscar dados da API e atualizar a tabela
+        async function fetchAndUpdateTable() {
+            const searchInput = document.getElementById('searchInput');
+            const searchValue = searchInput.value.trim();
+
+            // Só faz a requisição se o campo de busca estiver vazio
+            if (searchValue === "") {
+                try {
+                    const response = await fetch('/veiculos/rest');
+                    if (response.ok) {
+                        const veiculos = await response.json();
+                        updateTable(veiculos);
+                    } else {
+                        console.error('Erro ao buscar os dados:', response.status);
+                    }
+                } catch (error) {
+                    console.error('Erro de conexão:', error);
+                }
+            }
+        }
+
+        // Função para atualizar a tabela com os dados recebidos
+        function updateTable(veiculos) {
+            const tableBody = document.querySelector('#vehicleTable tbody');
+            tableBody.innerHTML = ''; // Limpa a tabela antes de preencher
+
+            veiculos.forEach(veiculo => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${veiculo.llp_idveiculo}</td>
+                    <td>${veiculo.llp_nome}</td>
+                    <td>${veiculo.llp_modelo}</td>
+                    <td>${veiculo.llp_marca}</td>
+                    <td>${veiculo.llp_ano}</td>
+                    <td>
+                        <a href="/veiculos/editar/${veiculo.llp_idveiculo}" class="btn btn-warning btn-sm">Editar</a>
+                        <a href="/veiculos/excluir/${veiculo.llp_idveiculo}" class="btn btn-danger btn-sm">Excluir</a>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Configura o intervalo para buscar e atualizar a cada 1 segundo
+        setInterval(fetchAndUpdateTable, 1000);
+    </script>
+
+</head>
+<body>
+<div class="container mt-5">
+    <h1>Lista de Veículos</h1>
+    <a href="/"><img width="100px" src="https://png.pngtree.com/png-vector/20231114/ourmid/pngtree-back-icon-navigation-png-image_10540451.png"/></a>
+    <a href="/veiculos/novo" class="btn btn-primary mb-3">Novo Veículo</a>
+    <div class="mb-3">
+        <label for="searchInput" class="form-label">Pesquisar por Nome:</label>
+        <input type="text" id="searchInput" class="form-control" placeholder="Digite o nome do veículo">
+    </div>
+    <table id="vehicleTable" class="table table-striped">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nome</th>
+            <th>Modelo</th>
+            <th>Marca</th>
+            <th>Ano</th>
+            <th>Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="veiculo : ${veiculos}">
+            <td th:text="${veiculo.llp_idveiculo}"></td>
+            <td th:text="${veiculo.llp_nome}"></td>
+            <td th:text="${veiculo.llp_modelo}"></td>
+            <td th:text="${veiculo.llp_marca}"></td>
+            <td th:text="${veiculo.llp_ano}"></td>
+            <td>
+                <a th:href="@{/veiculos/editar/{id}(id=${veiculo.llp_idveiculo})}" class="btn btn-warning btn-sm">Editar</a>
+                <a th:href="@{/veiculos/excluir/{id}(id=${veiculo.llp_idveiculo})}" class="btn btn-danger btn-sm">Excluir</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    
+</div>
+
+<script>
+    document.getElementById('searchInput').addEventListener('input', function () {
+    const filter = this.value.toLowerCase();
+    const rows = document.querySelectorAll('#vehicleTable tbody tr');
+    
+    rows.forEach(row => {
+        const nameCell = row.querySelector('td:nth-child(2)'); // Seleciona a segunda coluna (Nome)
+        if (nameCell && nameCell.textContent.toLowerCase().includes(filter)) {
+            row.style.display = '';
+        } else {
+            row.style.display = 'none';
+        }
+    });
+});
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

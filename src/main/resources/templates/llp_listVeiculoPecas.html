@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Veículos e Peças</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-5">Lista de Veículos e Peças</h1>
+        <a href="/"><img width="100px" src="https://png.pngtree.com/png-vector/20231114/ourmid/pngtree-back-icon-navigation-png-image_10540451.png"/></a>
+    
+        <a href="/veiculoPeca/add" class="btn btn-primary my-3">Adicionar</a>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>ID Relatório</th>
+                    <th>Veículo</th>
+                    <th>Peça</th>
+                    <th>Quantidade</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="veiculoPeca : ${llp_veiculoPecas}">
+                    <td th:text="${veiculoPeca.llp_idrelatorio}"></td>
+                    <td th:text="${veiculoPeca.llp_veiculo.llp_nome}"></td>
+                    <td th:text="${veiculoPeca.llp_peca.llp_nome}"></td>
+                    <td th:text="${veiculoPeca.llp_quantidade}"></td>
+                    <td>
+                        <a href="/veiculoPeca/edit/{id}" th:href="@{/veiculoPeca/edit/{id}(id=${veiculoPeca.llp_idrelatorio})}" class="btn btn-warning">Editar</a>
+                        <a href="/veiculoPeca/delete/{id}" th:href="@{/veiculoPeca/delete/{id}(id=${veiculoPeca.llp_idrelatorio})}" class="btn btn-danger">Excluir</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
